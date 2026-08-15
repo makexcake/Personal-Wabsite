@@ -1,33 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Contact.css';
 
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-interface SubmitStatus {
-  submitted: boolean;
-  success: boolean;
-  message: string;
-}
-
 function Contact(): JSX.Element {
   const [animateContact, setAnimateContact] = useState<boolean>(false);
   const contactRef = useRef<HTMLDivElement>(null);
-
-  const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: ''
-  });
-
-  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>({
-    submitted: false,
-    success: false,
-    message: ''
-  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -52,33 +28,12 @@ function Contact(): JSX.Element {
     };
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    setSubmitStatus({
-      submitted: true,
-      success: true,
-      message: 'Thank you for your message! I will get back to you soon.'
-    });
-
-    setFormData({ name: '', email: '', message: '' });
-
-    setTimeout(() => {
-      setSubmitStatus({ submitted: false, success: false, message: '' });
-    }, 5000);
-  };
-
   return (
     <div className="Contact" ref={contactRef}>
       <div className={`contact-wrapper ${animateContact ? 'animate' : ''}`}>
         <div className="section-header">
           <h2 className="section-title">Get In Touch</h2>
-          <div className="section-subtitle">Feel free to reach out for collaboration or questions</div>
+          <div className="section-subtitle">Feel free to reach out on LinkedIn for collaboration or questions</div>
         </div>
 
         <div className="contact-container">
@@ -117,57 +72,6 @@ function Contact(): JSX.Element {
                 Download Resume
               </a>
             </div>
-          </div>
-
-          <div className="contact-form-container">
-            <h3>Send a Message</h3>
-            {submitStatus.submitted ? (
-              <div className={`submission-message ${submitStatus.success ? 'success' : 'error'}`}>
-                {submitStatus.message}
-              </div>
-            ) : (
-              <form className="contact-form" onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label htmlFor="message">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  ></textarea>
-                </div>
-
-                <button type="submit" className="submit-button">
-                  Send Message
-                </button>
-              </form>
-            )}
           </div>
         </div>
 
